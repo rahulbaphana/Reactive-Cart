@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="js/lib/react/react-with-addons.js"></script>
+    <script src="js/lib/react/JSXTransformer.js"></script>
+</head>
+<body>
+<div id="container">
+</div>
+
+<script src="src/components.jsx" type="text/jsx"></script>
+<script type="text/jsx">
+
+    var inputData = [
+        {id: 1, name: 'Apple', quantity: 2},
+        {id: 2, name: 'Orange', quantity: 5},
+        {id: 3, name: 'Mango', quantity: 6},
+        {id: 4, name: "Jamun", quantity: 11}
+    ];
+
+    React.render(<Cart data={inputData}/>, document.getElementById("container"));
+</script>
+</body>
+</html>
