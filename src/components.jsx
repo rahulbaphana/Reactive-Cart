@@ -1,7 +1,12 @@
 var Cart = React.createClass({
+    compareItems: function(a,b){
+        return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase())
+    },
     getInitialState: function () {
+        var data = this.props.data || [];
+        data.sort(this.compareItems);
         return {
-            items: this.props.data || []
+            items: data
         }
     },
     addItem: function (item) {
@@ -12,8 +17,10 @@ var Cart = React.createClass({
         var newItem = index === -1;
 
         item.name = newItem ? item.name : items[index].name;
+        var updatedItems = newItem ? items.concat(item) : items.replace(item, index);
+        updatedItems.sort(this.compareItems);
         this.setState({
-            items: newItem ? items.concat(item) : items.replace(item, index)
+            items: updatedItems
         });
     },
     removeItem: function(name){
