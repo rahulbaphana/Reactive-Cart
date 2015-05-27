@@ -113,10 +113,10 @@ describe("Cart", function(){
             );
 
             expect(cart.state.items).toEqual([
-                {name: 'Apple', quantity: 2},
-                {name: "Jamun", quantity: 11},
-                {name: 'Mango', quantity: 6},
-                {name: 'Orange', quantity: 5}
+                {name: 'Apple', quantity: 2, edit: false},
+                {name: "Jamun", quantity: 11, edit: false},
+                {name: 'Mango', quantity: 6, edit: false},
+                {name: 'Orange', quantity: 5, edit: false}
             ]);
         });
 
@@ -138,12 +138,37 @@ describe("Cart", function(){
             TestUtils.Simulate.click(addButton.getDOMNode());
 
             expect(cart.state.items).toEqual([
-                {name: 'Apple', quantity: 2},
-                {name: addedItemName, quantity: addedQuantity},
-                {name: "Jamun", quantity: 11},
-                {name: 'Mango', quantity: 6},
-                {name: 'Orange', quantity: 5}
+                {name: 'Apple', quantity: 2, edit: false},
+                {name: addedItemName, quantity: addedQuantity, edit: false},
+                {name: "Jamun", quantity: 11, edit: false},
+                {name: 'Mango', quantity: 6, edit: false},
+                {name: 'Orange', quantity: 5, edit: false}
             ]);
         });
+    });
+
+    it("should update name of item when clicked and new name is entered",function(){
+        var cart = TestUtils.renderIntoDocument(
+            <Cart data={inputData}/>
+        );
+
+        var APPLE = 0;
+        var cartItems = TestUtils.findRenderedComponentWithType(cart, CartItems);
+        var itemToClick = (TestUtils.scryRenderedComponentsWithType(cartItems, ItemName))[APPLE];
+        var itemInput = TestUtils.findRenderedDOMComponentWithClass(itemToClick, 'item-name');
+
+        TestUtils.Simulate.click(itemInput.getDOMNode());
+
+        var editableItem = TestUtils.findRenderedDOMComponentWithTag(itemToClick, "input");
+
+        expect(editableItem.getDOMNode().value).toBe(inputData[APPLE].name);
+
+        var BANANA = "Banana";
+        TestUtils.Simulate.change(editableItem.getDOMNode(), {target: {value: BANANA}});
+        editableItem.getDOMNode().value = BANANA;
+        TestUtils.Simulate.blur(editableItem.getDOMNode());
+
+
+        expect(cart.state.items[APPLE].name).toBe(BANANA);
     });
 });

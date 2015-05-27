@@ -6,7 +6,10 @@ var Cart = React.createClass({
         var data = this.props.data || [];
         data.sort(this.compareItems);
         return {
-            items: data
+            items: data.map(function(item){
+                item.edit = false;
+                return item;
+            })
         }
     },
     addItem: function (item) {
@@ -17,6 +20,7 @@ var Cart = React.createClass({
         var newItem = index === -1;
 
         item.name = newItem ? item.name : items[index].name;
+        item.edit = false;
         var updatedItems = newItem ? items.concat(item) : items.replace(item, index);
         updatedItems.sort(this.compareItems);
         this.setState({
@@ -32,6 +36,18 @@ var Cart = React.createClass({
             items: this.state.items.remove(index)
         });
     },
+    editItem: function(name, item) {
+        var index = this.state.items.findIndex(function (ele) {
+            return ele.name.toLocaleLowerCase() === name.toLocaleLowerCase()
+        });
+
+        var updateItems = this.state.items;
+        updateItems[index].name = item.name || updateItems[index].name;
+        updateItems[index].edit = item.edit;
+        this.setState({
+            items:  updateItems.sort(this.compareItems)
+        });
+    },
     render: function () {
         var total = this.state.items.reduce(function (acc, item) {
             return acc + item.quantity;
@@ -40,7 +56,7 @@ var Cart = React.createClass({
         return (
             <div id="cart">
                 <InputForm action={this.addItem}/>
-                <CartItems items={this.state.items} remove={this.removeItem}></CartItems>
+                <CartItems items={this.state.items} remove={this.removeItem} editItem={this.editItem}></CartItems>
                 <TotalItems totalQuantity={total}></TotalItems>
             </div>
         );
@@ -90,9 +106,10 @@ var CartItems = React.createClass({
         var _this = this;
         var itemNames = this.props.items.map(function (item, index) {
             return (
-                <li key={index}>
-                    <span>{item.name} - {item.quantity}</span>
-                    <RemoveButton name={item.name} action={_this.props.remove}/>
+                <li key={index} className="item">
+                    <ItemName value={item.name} isEditable={item.edit} onEdit={_this.props.editItem}/> -
+                    <span className="item-quantity">{item.quantity}</span>
+                    {item.edit ? <button>ok</button> : <RemoveButton name={item.name} action={_this.props.remove}/>}
                 </li>
             );
         });
@@ -101,6 +118,27 @@ var CartItems = React.createClass({
             <ul>
                 {itemNames}
             </ul>
+        );
+    }
+});
+
+var ItemName = React.createClass({
+    componentDidUpdate: function(){
+        if(this.props.isEditable){
+            React.findDOMNode(this.refs.inputName).focus();
+        }
+    },
+    handleClick: function(event){
+        this.props.onEdit(this.props.value, {edit: true});
+    },
+    handleBlur: function(){
+        this.props.onEdit(this.props.value, {name: React.findDOMNode(this.refs.inputName).value ,edit: false});
+    },
+    render: function () {
+        var display = <span className="item-name" onClick={this.handleClick} >{this.props.value}</span>;
+        var edit = <input type="text" className="item-name-edit" onBlur={this.handleBlur} defaultValue={this.props.value} ref="inputName" />;
+        return (
+            <span>{this.props.isEditable ? edit : display}</span>
         );
     }
 });
