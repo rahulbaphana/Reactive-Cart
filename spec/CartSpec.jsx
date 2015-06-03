@@ -171,4 +171,26 @@ describe("Cart", function(){
 
         expect(cart.state.items[APPLE].name).toBe(BANANA);
     });
+
+    describe("CheckoutButton button",function(){
+        it("should be enabled when total quantity is greater than zero", function(){
+            var cart = TestUtils.renderIntoDocument(
+                <Cart data={inputData}/>
+            );
+
+            var checkoutButton = TestUtils.findRenderedComponentWithType(cart, CheckoutButton);
+
+            expect(checkoutButton.getDOMNode().disabled).toBe(false);
+        });
+
+        it("should be disabled when empty", function(){
+            var cart = TestUtils.renderIntoDocument(
+                <Cart />
+            );
+
+            var checkoutButton = TestUtils.findRenderedComponentWithType(cart, CheckoutButton);
+
+            expect(checkoutButton.getDOMNode().disabled).toBe(true);
+        });
+    });
 });

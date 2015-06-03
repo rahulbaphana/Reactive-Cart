@@ -58,6 +58,9 @@ var Cart = React.createClass({
                 <InputForm action={this.addItem}/>
                 <CartItems items={this.state.items} remove={this.removeItem} editItem={this.editItem}></CartItems>
                 <TotalItems totalQuantity={total}></TotalItems>
+                <Link to="checkout">
+                    <CheckoutButton isEnabled={total > 0} />
+                </Link>
             </div>
         );
     }
@@ -137,9 +140,7 @@ var ItemName = React.createClass({
     render: function () {
         var display = <span className="item-name" onClick={this.handleClick} >{this.props.value}</span>;
         var edit = <input type="text" className="item-name-edit" onBlur={this.handleBlur} defaultValue={this.props.value} ref="inputName" />;
-        return (
-            <span>{this.props.isEditable ? edit : display}</span>
-        );
+        return this.props.isEditable ? edit : display;
     }
 });
 
@@ -157,5 +158,13 @@ var RemoveButton = React.createClass({
 var TotalItems = React.createClass({
     render: function () {
         return (<div> Total Quantity : <span id="displayQuantity">{this.props.totalQuantity}</span></div>);
+    }
+});
+
+var CheckoutButton = React.createClass({
+    render: function() {
+        var enabled = (<button className="greenButton">Checkout</button>);
+        var disabled = (<button className="greenButton" disabled='true'>Checkout</button>);
+        return this.props.isEnabled ? enabled : disabled;
     }
 });
