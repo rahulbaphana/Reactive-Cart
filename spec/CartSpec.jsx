@@ -1,3 +1,15 @@
+var React = require('react/addons');
+require('./SpecHelper.jsx');
+
+var Cart = require('../src/components/Cart.jsx');
+var InputForm = require('../src/components/InputForm.jsx');
+var CartItems = require('../src/components/CartItems.jsx');
+var TotalItems = require('../src/components/TotalItems.jsx');
+var CheckoutButton = require('../src/components/CheckoutButton.jsx');
+var ItemName = require('../src/components/ItemName.jsx');
+var RemoveButton = require('../src/components/RemoveButton.jsx');
+
+
 describe("Cart", function(){
     var TestUtils = React.addons.TestUtils;
     var inputData = [];

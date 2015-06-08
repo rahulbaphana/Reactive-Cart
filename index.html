@@ -5,23 +5,14 @@
     <title></title>
     <script src="js/lib/react/react-with-addons.js"></script>
     <script src="js/lib/react/JSXTransformer.js"></script>
-    <script src="js/lib/react/ReactRouter.js"></script>
-
-    <script src="js/build/Polyfills.js"></script>
-    <script src="js/build/CartView.js"></script>
-    <script src="js/build/CheckoutView.js"></script>
-    <script src="js/build/AppRoute.js"></script>
 </head>
 <body>
 <div id="container">
 </div>
 
+<script src="js/build/bundle.js"></script>
 <script type="text/jsx">
-
-    Router.run(routes, Router.HashLocation, function (Root) {
-        React.render(React.createElement(Root, null), document.body);
-    });
-
+    React.render(React.createElement(Cart, null), document.body);
 </script>
 </body>
 </html>

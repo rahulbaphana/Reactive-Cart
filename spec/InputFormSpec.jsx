@@ -1,3 +1,6 @@
+var React = require('react');
+var InputForm = require('../src/components/InputForm.jsx');
+
 describe("InputForm", function() {
     var TestUtils = React.addons.TestUtils;
 

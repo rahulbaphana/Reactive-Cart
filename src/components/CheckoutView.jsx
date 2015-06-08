@@ -1,3 +1,5 @@
+var React = require('react');
+
 var Checkout = React.createClass({
     render() {
         return (
@@ -5,3 +7,5 @@ var Checkout = React.createClass({
         );
     }
 });
+
+module.exports = Checkout;
