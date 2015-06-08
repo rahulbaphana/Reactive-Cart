@@ -2,6 +2,7 @@ var gulp = require('gulp')
     , del = require('del')
     , changed = require('gulp-changed')
     , react = require('gulp-react')
+    , karma = require('gulp-karma')
     , webpack = require('gulp-webpack');
 
 var SRC = 'src/**/*.jsx';
@@ -43,6 +44,17 @@ gulp.task('compile-test', function () {
         .pipe(gulp.dest('build-spec'));
 });
 
+gulp.task('test', ['compile-test'], function() {
+    return gulp.src('build-spec/**/*.js')
+        .pipe(karma({
+            configFile: 'karma.conf.js',
+            action: 'watch'
+        }))
+        .on('error', function(err) {
+            throw err;
+        });
+});
+
 gulp.task('clean', function () {
     del("js/build");
     del("build-spec");
@@ -53,4 +65,4 @@ gulp.task('watch', ['compile', 'compile-test'], function () {
     gulp.watch(SPEC_LOCATION, ['compile-test']);
 });
 
-gulp.task('default', ['clean', 'watch']);
+gulp.task('default', ['clean', 'watch', 'test']);
