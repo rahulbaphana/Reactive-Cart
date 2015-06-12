@@ -5,13 +5,12 @@ var RemoveButton = require('./RemoveButton.jsx');
 
 var CartItems = React.createClass({
     render: function () {
-        var _this = this;
-        var itemNames = this.props.items.map(function (item, index) {
+        var itemNames = this.props.items.map((item, index) => {
             return (
                 <li key={index} className="item">
-                    <ItemName value={item.name} isEditable={item.edit} onEdit={_this.props.editItem} /> -
+                    <ItemName value={item.name} isEditable={item.edit} onEdit={this.props.editItem} /> -
                     <span className="item-quantity">{item.quantity}</span>
-                    {item.edit ? <button>ok</button> : <RemoveButton name={item.name} action={_this.props.remove}/>}
+                    {item.edit ? <button>ok</button> : <RemoveButton name={item.name} action={this.props.remove}/>}
                 </li>
             );
         });
